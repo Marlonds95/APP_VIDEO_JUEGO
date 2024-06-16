@@ -56,14 +56,15 @@ export const LoginScreen = () => {
             });
             return;
         }
-        //console.log(formLogin);
+        console.log(formLogin);
         try {
             const response = await signInWithEmailAndPassword(
                 auth,
                 formLogin.email,
                 formLogin.password
             );
-            //console.log(response);
+           // console.log(response);
+            navigation.dispatch(CommonActions.navigate({ name: 'Home' }));
         }
         catch (ex) {
             console.log(ex);

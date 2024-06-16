@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ImageBackground, View } from 'react-native';
 import { Avatar, Button, Divider, FAB, IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import { styles } from '../../theme/styles';
 import firebase, { updateProfile, signOut } from 'firebase/auth';
 import { auth, dbRealTime } from '../../configs/firebaseConfig';
 import { ref, get, update, set } from 'firebase/database';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
 // Interface - formulario perfil
 interface FormUser {
@@ -49,6 +50,7 @@ export const HomeScreen = () => {
         }));
     };
 
+    const navigation = useNavigation();
     const handlerUpdateUser = async () => {
         try {
             await updateProfile(userAuth!, {
@@ -71,17 +73,25 @@ export const HomeScreen = () => {
         }
     };
 
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-        } catch (error) {
-            console.error('Error al cerrar sesión:', error);
-        }
-    };
+    const handlerSignOut = async () => {
+        await signOut(auth);
+        //resetear las rutas
+        //navigation.dispatch(CommonActions.navigate({ name: 'Login' }));
+        navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Login' }] }))
+    }
 
     return (
+        
         <>
+        <ImageBackground
+            source={require('../../../assets/img/unnamed.webp')} 
+            style={styles.backgroundImage}
+            resizeMode="cover"
+        ></ImageBackground>
+        <View style={styles.container}><Text style={styles.text}>SNAKE</Text></View>
             <View style={styles.rootHome}>
+                
+            <View/>
                 <View style={styles.header}>
                     
                     <View>
@@ -100,7 +110,12 @@ export const HomeScreen = () => {
                             icon="logout"
                             size={30}
                             mode='contained'
-                            onPress={handleLogout}
+                            onPress={handlerSignOut}
+                        />
+                        <IconButton
+                            icon="play"
+                            size={30}
+                            onPress={() => navigation.dispatch(CommonActions.navigate('Game'))}
                         />
                     </View>
                 </View>

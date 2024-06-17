@@ -18,7 +18,7 @@ export function Header ({
 }: HeaderPorps): JSX.Element {
     const navigation = useNavigation()
     const handleGoBack = () => {
-        navigation.goBack(); // Función para navegar atrás
+        navigation.goBack(); 
     };
   return( 
     <View style={styles.container}>

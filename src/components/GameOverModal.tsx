@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Modal, StyleSheet, TouchableHighlight } from 'react-native';
 import { Colors } from '../theme/colors';
 
@@ -6,15 +6,27 @@ interface Props {
   visible: boolean;
   score: number;
   onClose: () => void;
+  saveScore: (score: number) => void;
 }
 
-const GameOverModal: React.FC<Props> = ({ visible, score, onClose }) => {
+const GameOverModal: React.FC<Props> = ({ visible, score, onClose, saveScore }) => {
+  const handleClose = () => {
+    saveScore(score);  // Llamar a saveScore correctamente
+    onClose();
+  };
+
+  useEffect(() => {
+    if (visible) {
+      console.log('GameOverModal is visible, score:', score);
+    }
+  }, [visible]);
+
   return (
     <Modal
       animationType="slide"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
+      onRequestClose={handleClose}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
@@ -22,7 +34,7 @@ const GameOverModal: React.FC<Props> = ({ visible, score, onClose }) => {
           <Text style={styles.modalText}>Score: {score}</Text>
           <TouchableHighlight
             style={{ ...styles.openButton, backgroundColor: Colors.primary }}
-            onPress={onClose}
+            onPress={handleClose}
           >
             <Text style={styles.textStyle}>Cerrar</Text>
           </TouchableHighlight>

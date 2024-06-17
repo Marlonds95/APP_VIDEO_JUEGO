@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -10,9 +10,9 @@ import { checkGameOver } from '../utils/checkGameOver'
 import { Food } from './Food';
 import { checkEatsFood } from '../utils/checkEatsFood'
 import { randomFoodPosition } from '../utils/randomFoodPosition'
-import { reload } from 'firebase/auth'
 import Score from './Score';
 import GameOverModal from './GameOverModal';
+import { saveScoreToFirebase } from '../utils/saveScoreToFirebase';
 
 const screenWidth = Math.round(Dimensions.get('window').width).toString().charAt(0) + '0';
 const screenHeight = Math.round(Dimensions.get('window').height).toString().charAt(0) + '0';
@@ -27,13 +27,13 @@ const MOVE_INTERVAL=50;
 const SCORE_INCREMENT=10;
 
 export function Game ():JSX.Element  {
-    const [direction, setDirection] = React.useState<Direction>(Direction.Right);
-    const [snake, setSnake] = React.useState<Coordinate[]>(SNAKE_INITIAL_POSITION);
-    const [food, setFood] = React.useState<Coordinate>(FOOD_INITIAL_POSITION);
-    const [isGameOver, setIsGameOver]= React.useState<boolean>(false);
-    const [score, setScore] = React.useState<number>(0);
-    const [isPaused, setIsPaused] = React.useState<boolean>(false);
-    React.useEffect(()=>{
+    const [direction, setDirection] = useState<Direction>(Direction.Right);
+    const [snake, setSnake] = useState<Coordinate[]>(SNAKE_INITIAL_POSITION);
+    const [food, setFood] = useState<Coordinate>(FOOD_INITIAL_POSITION);
+    const [isGameOver, setIsGameOver]= useState<boolean>(false);
+    const [score, setScore] = useState<number>(0);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
+    useEffect(()=>{
         if (!isGameOver){
             const intervalID = setInterval(()=>{
                 !isPaused && moveSnake();
@@ -45,14 +45,14 @@ export function Game ():JSX.Element  {
 
     },[snake, isGameOver, isPaused]);
 
-    const moveSnake = () => {
+ const moveSnake = () => {
         const snakeHead = snake[0];
         const newHead ={...snakeHead};
 
 
         //Game over
 if (checkGameOver(snakeHead, GAME_BOUNDS)){
-    setIsGameOver((prev) => !prev);
+    setIsGameOver(true);
     return;
 }
         switch(direction){
@@ -81,6 +81,8 @@ if (checkGameOver(snakeHead, GAME_BOUNDS)){
             setSnake([newHead, ...snake.slice(0, -1)]);
         }   
     };
+    
+    
 
     const handleGesture = (event: GestureEventType) =>{
         const { translationX, translationY}=(event.nativeEvent);
@@ -111,7 +113,8 @@ if (checkGameOver(snakeHead, GAME_BOUNDS)){
       };
     const pauseGame =() =>{
         setIsPaused(!isPaused);
-    }
+    };
+    
   return (
     <PanGestureHandler onGestureEvent={handleGesture}>
         <SafeAreaView style={styles.container}>
@@ -127,11 +130,8 @@ if (checkGameOver(snakeHead, GAME_BOUNDS)){
             <Food x={food.x} y={food.y}/>
             
             </View>
-            <GameOverModal
-          visible={isGameOver}
-          score={score}
-          onClose={() => reloadGame()} 
-        />
+            <GameOverModal visible={isGameOver} score={score} onClose={reloadGame}
+              saveScore={saveScoreToFirebase} />
         </SafeAreaView>
     </PanGestureHandler>
   )

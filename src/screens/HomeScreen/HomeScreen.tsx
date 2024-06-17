@@ -6,6 +6,7 @@ import firebase, { updateProfile, signOut } from 'firebase/auth';
 import { auth, dbRealTime } from '../../configs/firebaseConfig';
 import { ref, get, update, set } from 'firebase/database';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import ScoresModal from '../../components/ScoresModal';
 
 // Interface - formulario perfil
 interface FormUser {
@@ -88,6 +89,7 @@ export const HomeScreen = () => {
             style={styles.backgroundImage}
             resizeMode="cover"
         ></ImageBackground>
+        <ScoresModal/>
         <View style={styles.container}><Text style={styles.text}>SNAKE</Text></View>
             <View style={styles.rootHome}>
                 

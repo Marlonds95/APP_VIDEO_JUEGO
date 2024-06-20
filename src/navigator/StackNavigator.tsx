@@ -9,6 +9,9 @@ import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { styles } from '../theme/styles';
 import { Game } from '../components/Game';
+import { MainScreen } from '../screens/MainScreen/MainScreen';
+import { ScoresScreen } from '../screens/MainScreen/components/ScoresScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -21,10 +24,12 @@ interface Routes {
 
 //Arreglo que contiene las rutas cuando el usuario no está autenticado
 const routes: Routes[] = [
+    { name: "Main", screen: MainScreen },
     { name: "Login", screen: LoginScreen },
     { name: "Register", screen: RegisterScreen },
     { name: "Home", screen: HomeScreen },
     { name: "Game", screen: Game },
+    { name: "Scores", screen: ScoresScreen },
 ];
 
 export const StackNavigator = () => {
@@ -55,7 +60,7 @@ export const StackNavigator = () => {
                     <ActivityIndicator size={40} />
                 </View>
             ) : (
-                <Stack.Navigator initialRouteName={isAuth ? 'Home' : 'Login'}>
+                <Stack.Navigator initialRouteName={isAuth ? 'Home' : 'Main'}>
                     {
                             routes.map((item, index) => (
                                 <Stack.Screen

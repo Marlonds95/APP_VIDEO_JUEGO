@@ -6,7 +6,7 @@ import firebase, { updateProfile, signOut } from 'firebase/auth';
 import { auth, dbRealTime } from '../../configs/firebaseConfig';
 import { ref, get, update, set } from 'firebase/database';
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import ScoresModal from '../../components/ScoresModal';
+import {ScoresModal} from '../../components/ScoresModal';
 
 // Interface - formulario perfil
 interface FormUser {
@@ -84,21 +84,18 @@ export const HomeScreen = () => {
     return (
         
         <>
+        
         <ImageBackground
             source={require('../../../assets/img/unnamed.webp')} 
             style={styles.backgroundImage}
             resizeMode="cover"
         ></ImageBackground>
-        <ScoresModal/>
-        <View style={styles.container}><Text style={styles.text}>SNAKE</Text></View>
-            <View style={styles.rootHome}>
-                
-            <View/>
-                <View style={styles.header}>
+        
+        <View style={styles.header}>
                     
-                    <View>
-                        <Text variant='bodySmall'>Bienvenida</Text>
-                        <Text variant='labelLarge'>{userAuth?.displayName}</Text>
+                    <View style={styles.container}>
+                        <Text  variant='bodyLarge' style={styles.text}>Bienvenid@</Text>
+                        <Text variant='labelLarge'style={styles.text}>{userAuth?.displayName}</Text>
                         <Text variant='labelLarge'>{formUser.phone}</Text>
                     </View>
                     <View style={styles.iconEnd}>
@@ -114,16 +111,28 @@ export const HomeScreen = () => {
                             mode='contained'
                             onPress={handlerSignOut}
                         />
-                        <IconButton
-                            icon="play"
-                            size={30}
-                            onPress={() => navigation.dispatch(CommonActions.navigate('Game'))}
-                        />
+                        
                     </View>
                 </View>
                 <View>
 
-                </View>
+        </View>
+        <View style={styles.container}><Text style={styles.text}>SNAKE</Text></View>
+        <ScoresModal/>
+        <View style={styles.container}>
+            <IconButton
+                icon="play"
+                style={styles.button} mode="contained"
+                size={70}
+                onPress={() => navigation.dispatch(CommonActions.navigate('Game'))}
+                        />
+                <View style={styles.container}><Text style={styles.text}>Juega Ahora</Text></View>
+            </View>
+        
+            <View style={styles.rootHome}>
+                
+            <View/>
+                
             </View>
             <Portal>
                 <Modal visible={showModalProfile} contentContainerStyle={styles.modal}>
@@ -159,6 +168,7 @@ export const HomeScreen = () => {
                     <Button mode='contained'  onPress={handlerUpdateUser}>Actualizar</Button>
                 </Modal>
             </Portal>
+            
         </>
     );
 }

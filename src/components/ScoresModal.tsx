@@ -3,12 +3,13 @@ import { View, Text, Modal, StyleSheet, TouchableHighlight } from 'react-native'
 import { Colors } from '../theme/colors';
 import { ref, onValue } from 'firebase/database';
 import { auth, dbRealTime } from '../../src/configs/firebaseConfig';
+import { styles } from '../theme/styles';
 
 interface Score {
     score: number;
 }
 
-const ScoresModal: React.FC = () => {
+export const ScoresModal: React.FC = () => {
     const [scores, setScores] = useState<Score[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -30,7 +31,7 @@ const ScoresModal: React.FC = () => {
                 }));
                 setScores(scoresArray);
             } else {
-                console.log('No scores found.');
+                // console.log('No scores found.');
                 setScores([]); 
             }
         };
@@ -49,78 +50,38 @@ const ScoresModal: React.FC = () => {
     };
 
     return (
-        <View style={styles.centeredView}>
+        <View style={styles.centeredViewScore}>
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Top 10 Scores</Text>
+                <View style={styles.centeredViewScore}>
+                    <View style={styles.modalViewScore}>
+                        <Text style={styles.modalTextScore}>Top 10 Scores</Text>
                         {scores.map((score, index) => (
-                            <Text key={index} style={styles.modalText}>{index + 1}. {score.score}</Text>
+                            <Text key={index} style={styles.modalTextScore}>{index + 1}. {score.score}</Text>
                         ))}
                         <TouchableHighlight
-                            style={{ ...styles.openButton, backgroundColor: Colors.primary }}
+                            style={{ ...styles.openButtonScore, backgroundColor: Colors.primary }}
                             onPress={toggleModal}
                         >
-                            <Text style={styles.textStyle}>Close</Text>
+                            <Text style={styles.textStyleScore}>Close</Text>
                         </TouchableHighlight>
                     </View>
                 </View>
             </Modal>
 
             <TouchableHighlight
-                style={styles.openButton}
+                style={styles.openButtonScore}
                 onPress={toggleModal}
             >
-                <Text style={styles.textStyle}>Show Scores</Text>
+                <Text style={styles.textStyleScore}>Show Scores</Text>
             </TouchableHighlight>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-        fontSize: 20,
-    },
-    openButton: {
-        backgroundColor: Colors.primary,
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-        marginBottom: 10,
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-});
 
-export default ScoresModal;
+

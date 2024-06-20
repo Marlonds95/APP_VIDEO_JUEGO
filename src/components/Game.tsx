@@ -11,7 +11,7 @@ import { Food } from './Food';
 import { checkEatsFood } from '../utils/checkEatsFood'
 import { randomFoodPosition } from '../utils/randomFoodPosition'
 import Score from './Score';
-import GameOverModal from './GameOverModal';
+import {GameOverModal} from './GameOverModal';
 import { saveScoreToFirebase } from '../utils/saveScoreToFirebase';
 
 const screenWidth = Math.round(Dimensions.get('window').width).toString().charAt(0) + '0';

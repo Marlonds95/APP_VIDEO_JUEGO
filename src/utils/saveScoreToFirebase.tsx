@@ -27,7 +27,7 @@ export const saveScoreToFirebase = async (score: number) => {
 
         // Update scores in Firebase
         await set(userScoresRef, scores);
-        console.log('Scores updated successfully:', scores);
+        // console.log('Scores updated successfully:', scores);
     } catch (error) {
         console.error('Error saving score to Firebase:', error);
     }

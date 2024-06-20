@@ -4,6 +4,7 @@ import { Colors } from '../theme/colors';
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
+import { styles } from '../theme/styles';
 interface HeaderPorps{
     reloadGame: () => void;
     pauseGame: () => void;
@@ -21,7 +22,7 @@ export function Header ({
         navigation.goBack(); 
     };
   return( 
-    <View style={styles.container}>
+    <View style={styles.containerHeader}>
       <TouchableOpacity onPress={reloadGame}>
         <Ionicons name="reload-circle" size={35} color={Colors.primary} />
       </TouchableOpacity>
@@ -42,20 +43,5 @@ export function Header ({
   
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 0.05,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      borderColor: Colors.primary,
-      borderWidth: 12,
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
-      borderBottomWidth: 0,
-      padding: 15,
-      backgroundColor: Colors.background,
-    },
-})
 
 

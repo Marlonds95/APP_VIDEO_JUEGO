@@ -3,8 +3,9 @@ import { View } from 'react-native';
 import { Button, Snackbar, Text, TextInput } from 'react-native-paper';
 import { styles } from '../theme/styles';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../configs/firebaseConfig';
+import { auth, dbRealTime } from '../configs/firebaseConfig';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { ref, set } from 'firebase/database';
 
 //Interface - Formulario registro
 interface FormRegister {
@@ -63,6 +64,13 @@ export const RegisterScreen = () => {
                 formRegister.email,
                 formRegister.password
             );
+            // Guardar el correo en la base de datos en tiempo real
+            const user = response.user;
+            const userRef = ref(dbRealTime, `users/${user.uid}`);
+            await set(userRef, {
+                email: user.email,
+                
+            });
             setShowMessage({
                 visible: true,
                 message: 'Registro exitoso!',
@@ -70,7 +78,7 @@ export const RegisterScreen = () => {
             });
             //console.log(response);
         } catch (ex) {
-            console.log(ex);
+            // console.log(ex);
             setShowMessage({
                 visible: true,
                 message: 'No se logró registrar, inténtalo más tarde!',

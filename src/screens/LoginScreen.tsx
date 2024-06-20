@@ -56,7 +56,7 @@ export const LoginScreen = () => {
             });
             return;
         }
-        console.log(formLogin);
+        // console.log(formLogin);
         try {
             const response = await signInWithEmailAndPassword(
                 auth,
@@ -67,7 +67,7 @@ export const LoginScreen = () => {
             navigation.dispatch(CommonActions.navigate({ name: 'Home' }));
         }
         catch (ex) {
-            console.log(ex);
+            // console.log(ex);
             setShowMessage({
                 visible: true,
                 message: 'Usuario y/o contraseña incorrecta!',
@@ -79,7 +79,7 @@ export const LoginScreen = () => {
 
     return (
         <View style={styles.root}>
-            <Text style={styles.text}>Inicia Sesión</Text>
+            <Text style={styles.text}>Inicia Sesión Para Jugar</Text>
             <TextInput
                 mode="outlined"
                 label="Correo"
@@ -99,6 +99,11 @@ export const LoginScreen = () => {
             <Button style={styles.button} mode="contained" onPress={handlerFormLogin}>
                 Iniciar
             </Button>
+            <Button
+                    style={styles.button} mode="contained"
+                    onPress={() => navigation.dispatch(CommonActions.navigate('Main'))}
+                    
+                >Regresar</Button>
             <Text
                 style={styles.textRedirect}
                 onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Register' }))}>
